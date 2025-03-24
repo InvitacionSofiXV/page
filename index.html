@@ -222,44 +222,6 @@
             margin-top: 15px;
         }
         
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            width: 300px;
-            margin-top: 20px;
-        }
-        
-        .button {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #7d4f56;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 14px;
-        }
-        
-        .button-icon {
-            width: 50px;
-            height: 50px;
-            background: #ffcfda;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 5px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .button-icon:hover {
-            transform: scale(1.1);
-        }
-        
-        .button-text {
-            text-align: center;
-        }
-        
         .instruction {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
@@ -283,11 +245,6 @@
             .card {
                 width: 90%;
                 height: auto;
-            }
-            
-            .button-container {
-                flex-direction: column;
-                align-items: center;
             }
         }
     </style>
@@ -329,54 +286,6 @@
                 <div class="divider"></div>
                 
                 <div class="footer">Tu presencia será mi mejor regalo</div>
-                
-                <div class="button-container">
-                    <a href="#" class="button">
-                        <div class="button-icon" aria-label="Gift Icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 12V22H4V12" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M22 7H2V12H22V7Z" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M12 22V7" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M12 7H16.5C17.163 7 17.7989 6.73661 18.2678 6.26777C18.7366 5.79893 19 5.16304 19 4.5C19 3.83696 18.7366 3.20107 18.2678 2.73223C17.7989 2.26339 17.163 2 16.5 2C13 2 12 7 12 7Z" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M12 7H7.5C6.83696 7 6.20107 6.73661 5.73223 6.26777C5.26339 5.79893 5 5.16304 5 4.5C5 3.83696 5.26339 3.20107 5.73223 2.73223C6.20107 2.26339 6.83696 2 7.5 2C11 2 12 7 12 7Z" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="button-text">Regalo</div>
-                    </a>
-                    
-                    <a href="#" class="button">
-                        <div class="button-icon" aria-label="Photos Icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17 2H7C4.23858 2 2 4.23858 2 7V17C2 19.7614 4.23858 22 7 22H17C19.7614 22 22 19.7614 22 17V7C22 4.23858 19.7614 2 17 2Z" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8.5 12C8.5 10.067 10.067 8.5 12 8.5C13.933 8.5 15.5 10.067 15.5 12C15.5 13.933 13.933 15.5 12 15.5C10.067 15.5 8.5 13.933 8.5 12Z" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M17.5 6.5H17.51" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="button-text">Fotos</div>
-                    </a>
-                    
-                    <a href="#" class="button">
-                        <div class="button-icon" aria-label="Location Icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M12 21C12 21 19 16.5 19 10C19 6.13401 15.866 3 12 3C8.13401 3 5 6.13401 5 10C5 16.5 12 21 12 21Z" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="button-text">Ubicación</div>
-                    </a>
-                    
-                    <a href="#" class="button">
-                        <div class="button-icon" aria-label="Calendar Icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M16 2V6" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M8 2V6" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M3 10H21" stroke="#7d4f56" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="button-text">Calendario</div>
-                    </a>
-                </div>
             </div>
         </div>
         
