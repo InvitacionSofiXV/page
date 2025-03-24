@@ -25,6 +25,46 @@
             color: #3a2f2d;
             padding: 20px 10px;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><rect width="100" height="100" fill="none" stroke="%23ffd6e9" stroke-width="2"/></svg>');
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Estilos para los pétalos flotantes */
+        .petals-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .petal {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .petal1 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Cpath d='M30,5 C40,0 50,10 45,20 C40,30 20,30 15,20 C10,10 20,0 30,5 Z' fill='%23ffb6c1' fill-opacity='0.7'/%3E%3C/svg%3E");
+        }
+        
+        .petal2 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'%3E%3Cpath d='M30,5 C45,5 50,20 40,30 C30,40 15,35 10,25 C5,15 15,5 30,5 Z' fill='%23ffc0cb' fill-opacity='0.6'/%3E%3C/svg%3E");
+        }
+        
+        .petal3 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 30'%3E%3Cpath d='M25,5 C35,0 45,5 45,15 C45,25 35,30 25,25 C15,30 5,25 5,15 C5,5 15,0 25,5 Z' fill='%23ffcccb' fill-opacity='0.5'/%3E%3C/svg%3E");
+        }
+        
+        .petal4 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 30'%3E%3Cpath d='M20,5 C25,0 35,0 35,10 C35,20 25,25 20,20 C15,25 5,20 5,10 C5,0 15,0 20,5 Z' fill='%23ffdae0' fill-opacity='0.6'/%3E%3C/svg%3E");
         }
         
         .container {
@@ -35,6 +75,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            z-index: 1;
         }
         
         .floral-top {
@@ -65,11 +106,14 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            transition: all 0.8s ease;
+            transition: all 0.4s ease;
         }
         
         .envelope-container.hidden {
-            display: none;
+            opacity: 0;
+            visibility: hidden;
+            height: 0;
+            margin: 0;
         }
         
         .envelope {
@@ -86,6 +130,7 @@
             margin: 0 auto;
             display: block;
             transition: transform 0.3s ease;
+            overflow: hidden;
         }
         
         .envelope:hover {
@@ -113,12 +158,27 @@
             background: linear-gradient(145deg, #ffb0be, #ffc6d1);
             border-radius: 8px;
             transform-origin: top;
-            transition: transform 0.6s ease-in-out;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 2;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+        
+        .envelope.opening .envelope-flap {
+            transform: rotateX(180deg);
+        }
+        
+        .envelope-inside {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: linear-gradient(to bottom, #fff8fa, #fff);
+            border-radius: 6px;
+            z-index: 1;
         }
         
         .envelope-flap:after {
@@ -163,10 +223,15 @@
             width: 100%;
             max-width: 700px;
             margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
         
         .card-container.visible {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .card {
@@ -279,6 +344,9 @@
     </style>
 </head>
 <body>
+    <!-- Contenedor para los pétalos flotantes -->
+    <div class="petals-container" id="petals-container"></div>
+    
     <div class="container">
         <div class="floral-top"></div>
         
@@ -290,6 +358,7 @@
                         <div class="date">17 Mayo | 2025</div>
                     </div>
                 </div>
+                <div class="envelope-inside"></div>
             </div>
             <div class="instruction">Haz clic en el sobre para abrir la invitación</div>
         </div>
@@ -327,9 +396,121 @@
     </div>
     
     <script>
+        // Script para la animación de pétalos
+        function createPetals() {
+            const container = document.getElementById('petals-container');
+            const petalTypes = ['petal1', 'petal2', 'petal3', 'petal4'];
+            const numPetals = 40; // Cantidad de pétalos
+            
+            for (let i = 0; i < numPetals; i++) {
+                const petal = document.createElement('div');
+                const petalType = petalTypes[Math.floor(Math.random() * petalTypes.length)];
+                
+                // Tamaño aleatorio para los pétalos
+                const size = Math.random() * 20 + 15; // entre 15px y 35px
+                
+                // Posición inicial
+                const startPositionLeft = Math.random() * 100; // % de la pantalla
+                const startPositionTop = Math.random() * -100 - 50; // empieza arriba de la pantalla
+                
+                // Duración de la animación
+                const duration = Math.random() * 10 + 8; // entre 8 y 18 segundos
+                
+                // Retraso inicial
+                const delay = Math.random() * 10; // entre 0 y 10 segundos
+                
+                // Rotación aleatoria
+                const rotation = Math.random() * 360;
+                
+                // Aplicar estilos
+                petal.className = `petal ${petalType}`;
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size}px`;
+                petal.style.left = `${startPositionLeft}%`;
+                petal.style.top = `${startPositionTop}px`;
+                petal.style.transform = `rotate(${rotation}deg)`;
+                
+                // Añadir el pétalo al contenedor
+                container.appendChild(petal);
+                
+                // Animar el pétalo
+                animatePetal(petal, duration, delay);
+            }
+        }
+        
+        function animatePetal(petal, duration, delay) {
+            // Posición final
+            const endPositionTop = window.innerHeight + 100; // más allá del fondo de la pantalla
+            const swayAmount = Math.random() * 20 - 10; // oscilación entre -10% y 10%
+            
+            // Ajuste para dispositivos móviles
+            let horizontalMovement = 10;
+            if (window.innerWidth < 600) {
+                horizontalMovement = 5;
+            }
+            
+            // Cambio aleatorio en posición horizontal
+            const endPositionLeft = parseFloat(petal.style.left) + (Math.random() * horizontalMovement * 2 - horizontalMovement);
+            
+            // Inicio de la animación después del retraso
+            setTimeout(() => {
+                // Animación de caída
+                petal.style.transition = `top ${duration}s linear, left ${duration}s ease-in-out, transform ${duration}s ease-in-out`;
+                
+                // Aplica oscilación mientras cae
+                let currentLeft = parseFloat(petal.style.left);
+                
+                // Actualizar posición con oscilación
+                const updatePosition = () => {
+                    if (parseFloat(petal.style.top) < endPositionTop) {
+                        currentLeft += swayAmount * 0.02; // Pequeño incremento para oscilación
+                        petal.style.left = `${currentLeft}%`;
+                        petal.style.transform = `rotate(${parseFloat(petal.style.transform.replace('rotate(', '').replace('deg)', '')) + 1}deg)`;
+                        
+                        requestAnimationFrame(updatePosition);
+                    } else {
+                        // Cuando el pétalo llegue al final, reinicia su posición
+                        resetPetal(petal, duration);
+                    }
+                };
+                
+                // Mover hacia abajo
+                petal.style.top = `${endPositionTop}px`;
+                
+                // Iniciar oscilación
+                updatePosition();
+                
+            }, delay * 1000);
+        }
+        
+        function resetPetal(petal, duration) {
+            // Reposicionar el pétalo arriba (fuera de la pantalla) sin transición
+            petal.style.transition = 'none';
+            petal.style.top = `${Math.random() * -100 - 50}px`;
+            petal.style.left = `${Math.random() * 100}%`;
+            
+            // Forzar un reflow para que el navegador aplique los cambios antes de la próxima transición
+            petal.offsetHeight;
+            
+            // Reanimar el pétalo después de un pequeño retraso
+            setTimeout(() => {
+                animatePetal(petal, duration, 0);
+            }, 100);
+        }
+        
+        // Iniciar la animación de pétalos cuando la página cargue
+        window.addEventListener('load', createPetals);
+        
+        // Script para abrir el sobre
         document.getElementById('envelope').addEventListener('click', function() {
-            document.getElementById('envelope-container').classList.add('hidden');
-            document.getElementById('card-container').classList.add('visible');
+            // Primero abre el sobre con la animación
+            this.classList.add('opening');
+            
+            // Espera a que termine la animación de apertura antes de mostrar la tarjeta
+            setTimeout(function() {
+                document.getElementById('envelope-container').classList.add('hidden');
+                document.getElementById('card-container').classList.add('visible');
+            }, 600);
         });
     </script>
 </body>
